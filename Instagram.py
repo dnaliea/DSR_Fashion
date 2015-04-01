@@ -139,7 +139,7 @@ def _getAllData_test(id):
                 
     NumPics = len(_picUrl)
     #print NumPics
-    usrname = data[i]["user"]["username"]
+    usrname = user[1]
     min_time = min(_timestamp)
     min_time = datetime.date.fromtimestamp(float(min_time))
     max_time = max(_timestamp)
