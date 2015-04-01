@@ -179,5 +179,52 @@ for i in range(0,len(ids)):
 print "All done!"
 
 ###############################################
+
+
+###########DOWNLOAD PICS FROM URL LIST#######################
+picURLs = test["url"]
+#print picURLs
+
+def rgb2gray(rgb):
+    '''
+    converts RGB to grayscale, weighed avg, more close to human perception'
+    '''
+
+    r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
+    gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
+    return gray
+
+def downloadPicsFromUrl(picURLs):    
+    '''
+    using urllib and PIL to get and save pics to disk, image also is a PIL object
+    ''' 
+    pics = []
+    labels = []
+    
+    for i in range(0,len(picURLs)):   
+        __picUrl=picURLs[i]
+        #print __picUrl
+        label = picURLs[i].rsplit('/',1)[1]    
+        path = "/Users/daniela.drechsel/Documents/_DSR/Project/Fashion/instagram/" + label
+        #print path
+        r = requests.get(__picUrl)
+        image = Image.open(StringIO(r.content))
+        image.save(path, format = 'JPEG')
+        #image = image.convert('LA')
+        image = np.array(image)
+        #print image.dtype
+        image = rgb2gray(image)
+        image = np.ravel(image) # convert to rgb
+        #image = image.reshape(306,306) #undo the reshape
+        pics.append(image) 
+        labels.append(label)
+        
+        #image.show()                         
+        #image.shape()
+        #print type(image)
+        
+    print  str(len(picURLs)) + " images loaded"  
+    return pics, labels
+   
         
     
